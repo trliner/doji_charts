@@ -1,46 +1,32 @@
 <%
-  title = 'SPY: 10/25/10 - 10/28/10'
-  data = [
-    # [time, [low, lower(open, last), open < last ? lower : higher,higher(open, last), high, 'green', 'red']]
-    [5,[117.83,118.38,119.06,119.06,119.11, 'green', 'red']],
-    [4,[117.26,117.89,117.89,118.38,118.51, 'green', 'red']],
-    [3,[117.87,118.1,118.1,118.7,118.84, 'green', 'red']],
-    [2,[118.61,118.7,119.14,119.14,119.76, 'green', 'red']],
-    [1,[118,118.31,118.31,118.35,118.53, 'green', 'red']]
-  ]
-  labels = [
-    ['10/28', 5],
-    ['10/27', 4],
-    ['10/26', 3],
-    ['10/25', 2],
-    ['10/22', 1]
-  ]
-  canvas_width = 800
-  gutter = 45
-  h_lines = 5
+  H_LINES = 5
 
-  data_length = data.count
-  data_low = data.collect {|d| d[1][0]}.sort.first
-  data_high = data.collect {|d| d[1][4]}.sort.last
-  data_range = data_high - data_low
+  def y_min_and_max(data)
+    data_low = data.collect {|d| d[1][0]}.sort.first
+    data_high = data.collect {|d| d[1][4]}.sort.last
+    data_range = data_high - data_low
 
-  chart_width = canvas_width - gutter * 2
-  chart_range = (data_range * 1.5 / (h_lines + 1) / 0.25).ceil * 0.25 * h_lines
-  x_max = data_length + 1
-  y_min = ((data_low - ((chart_range - data_range) / 2)) / 0.25).round * 0.25
-  y_max = y_min + chart_range
+    chart_range = (data_range * 1.5 / (H_LINES + 1) / 0.25).ceil * 0.25 * H_LINES
+    chart_padding = (chart_range - data_range) / 2
+    y_min = ((data_low - chart_padding) / 0.25).round * 0.25
+    y_max = y_min + chart_range
+    [y_min, y_max]
+  end
+
+  x_max = @data.count + 1
+  y_min, y_max = y_min_and_max(@data)
 %>
-<canvas id="dojiCanvas" width="<%= canvas_width %>" height="600">[No canvas support]</canvas>
+<canvas id="dojiCanvas" width="800" height="600">[No canvas support]</canvas>
 
 <script>
     window.onload = function () {
-      dojiChart = new RGraph.Scatter('dojiCanvas', <%= data.to_json %>);
+      dojiChart = new RGraph.Scatter('dojiCanvas', <%= @data.to_json %>);
 
-      dojiChart.Set('chart.title', <%= title.to_json %>);
-      dojiChart.Set('chart.labels', <%= labels.to_json %>);
-      dojiChart.Set('chart.gutter', <%= gutter %>);
+      dojiChart.Set('chart.title', <%= @chart_title.to_json %>);
+      dojiChart.Set('chart.labels', <%= @labels.to_json %>);
 
-      dojiChart.Set('chart.background.grid.autofit', 'true');
+      dojiChart.Set('chart.gutter', 45);
+      dojiChart.Set('chart.background.grid.autofit', true);
       dojiChart.Set('chart.boxplot.width', 15);
       dojiChart.Set('chart.scale.decimals', 2);
       dojiChart.Set('chart.text.angle', 45);
@@ -52,7 +38,7 @@
 
       dojiChart.Set('chart.ymax', <%= y_max %>);
       dojiChart.Set('chart.ymin', <%= y_min %>);
-      dojiChart.Set('chart.background.grid.autofit.numhlines', <%= h_lines %>);
+      dojiChart.Set('chart.background.grid.autofit.numhlines', <%= H_LINES %>);
 
       dojiChart.Draw();
     }
