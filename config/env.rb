@@ -1,0 +1,1 @@
+set :views, root_path("app", "views")

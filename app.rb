@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'json'
+require 'app/base'
 
 get '/' do
   @page_title = "Doji Charts"
