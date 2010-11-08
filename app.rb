@@ -1,6 +1,10 @@
 require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 require 'sinatra'
-require 'json'
+Bundler.require(:default)
+
 require 'app/base'
 
 get '/' do
