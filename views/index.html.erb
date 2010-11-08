@@ -1,1 +1,32 @@
-<canvas id="dojiCanvas" width="600" height="250">[No canvas support]</canvas>
+<% canvas_width = 800 %>
+<% gutter = 45 %>
+<canvas id="dojiCanvas" width="<%= canvas_width %>" height="600">[No canvas support]</canvas>
+
+<script>
+    window.onload = function () {
+      var data = [
+                  // [time, [low, lower(open, last), open < last ? lower : higher,higher(open, last), high, 'green', 'red']]
+                  [4,[117.83,118.38,119.06,119.06,119.11, 'green', 'red']],
+                  [3,[117.26,117.89,117.89,118.38,118.51, 'green', 'red']],
+                  [2,[117.87,118.1,118.1,118.7,118.84, 'green', 'red']],
+                  [1,[118.61,118.7,119.14,119.14,119.76, 'green', 'red']]
+                 ];
+      var labels = [
+                    ['10/28', 4],
+                    ['10/27', 3],
+                    ['10/26', 2],
+                    ['10/25', 1],
+                   ]
+
+      dojiChart = new RGraph.Scatter('dojiCanvas', data);
+      dojiChart.Set('chart.title', 'SPY: 10/25/10 - 10/28/10');
+      dojiChart.Set('chart.labels', labels);
+      dojiChart.Set('chart.gutter', <%= gutter %>);
+      dojiChart.Set('chart.xmax', 5.09);
+      dojiChart.Set('chart.ymax', 120);
+      dojiChart.Set('chart.ymin', 117);
+      dojiChart.Set('chart.boxplot.width', 15);
+      dojiChart.Set('chart.scale.decimals', 2);
+      dojiChart.Draw();
+    }
+</script>
