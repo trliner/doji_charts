@@ -2,4 +2,13 @@ class Doji
   H_LINES = 5
 end
 
+DataMapper.setup(:default, {
+  :adapter  => 'mysql',
+  :host     => 'localhost',
+  :username => 'root' ,
+  :password => '',
+  :database => 'doji_development'})
+
+DataMapper.auto_upgrade!
+
 load_app 'helpers'
