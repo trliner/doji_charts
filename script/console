@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+RACK_ENV = ENV['RACK_ENV'] ||= ARGV.first || 'development'
+platform_irb = RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
+libs =  " -r app"
+
+puts "Loading #{RACK_ENV} environment (Sinatra)"
+exec "#{platform_irb} #{libs} --simple-prompt"
