@@ -12,3 +12,4 @@ DataMapper.setup(:default, {
 DataMapper.auto_upgrade!
 
 load_app 'helpers'
+load_app 'models'
