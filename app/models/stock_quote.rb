@@ -13,40 +13,42 @@ class StockQuote
       all(:order => :date)
   end
 
-  def self.chart_data(range)
+  def self.chart_data(type, range)
     chart_data = []
     time = 1
     range.each do |quote|
-      #[time, [low, lower(open, last), open < last ? lower : higher,higher(open, last), high, up_color, down_color]]
-      chart_data << [time, quote.price_array << 'green' <<'red']
+      chart_data << quote.send(type, time)
       time += 1
     end
     chart_data
   end
 
-  def self.labels(range)
-    labels = []
-    time = 1
-    range.each do |quote|
-      #[title, time]
-      labels << [quote.date.to_s, time]
-      time += 1
-    end
-    labels
+  def self.chart_title(range)
+    "SPY: #{range.first.date.strftime("%m/%d/%Y")} - " +
+    "#{range.last.date.strftime("%m/%d/%Y")}"
   end
 
-  def self.chart_title(range)
-    "SPY: #{range.first.date.to_s} - #{range.last.date.to_s}"
+  def label(time)
+    #[title, time]
+    [self.date.strftime("%m/%d"), time]
+  end
+
+  def candle(time)
+    #[time, [low, lower(open, last), open < last ? lower : higher,higher(open, last), high, up_color, down_color]]
+    [time, self.price_array << 'green' <<'red']
   end
 
   def price_array
-    high_low = if self.open > self.close
-      [self.open, self.close]
-    else
-      [self.close, self.open]
-    end
-    [self.low, high_low.last, self.open, high_low.first, self.high].
+    [self.low, self.body_low, self.open, self.body_high, self.high].
       collect { |x| x.to_f }
+  end
+
+  def body_high
+    self.open > self.close ? self.open : self.close
+  end
+
+  def body_low
+    self.open > self.close ? self.close : self.open
   end
 
 end
