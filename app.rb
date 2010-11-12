@@ -8,15 +8,10 @@ Bundler.require(:default)
 require 'app/base'
 
 get '/' do
+  range = StockQuote.range("2010-10-1", "2010-10-28")
   @page_title = "Doji Charts"
-  @chart_title = 'SPY: 10/25/10 - 10/28/10'
-  @data = StockQuote.chart_data("2010-10-18", "2010-10-28")
-  @labels = [
-    ['10/28', 5],
-    ['10/27', 4],
-    ['10/26', 3],
-    ['10/25', 2],
-    ['10/22', 1]
-  ]
+  @chart_title = StockQuote.chart_title(range)
+  @data = StockQuote.chart_data(range)
+  @labels = StockQuote.labels(range)
   erb :'index.html'
 end
