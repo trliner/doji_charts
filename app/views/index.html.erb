@@ -4,6 +4,19 @@
 %>
 <canvas id="dojiCanvas" width="800" height="600">[No canvas support]</canvas>
 
+<form method="post"action = "/">
+  <ol style="list-style-type: none;">
+  <li>
+    <label>Start Date</label>
+    <input name="post[start_date]" value=<%= @start_date %> />
+  </li>
+  <li>
+    <label>End Date</label>
+    <input name="post[end_date]" value=<%= @end_date %> /></li>
+  <li><input type="submit" value="Submit" /></li>
+  </ol>
+</form>
+
 <script>
     window.onload = function () {
       dojiChart = new RGraph.Scatter('dojiCanvas', <%= @data.to_json %>);

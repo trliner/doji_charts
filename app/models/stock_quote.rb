@@ -13,6 +13,10 @@ class StockQuote
       all(:order => :date)
   end
 
+  def self.most_recent
+    self.first(:order => :date.desc)
+  end
+
   def self.chart_data(type, range)
     chart_data = []
     time = 1
