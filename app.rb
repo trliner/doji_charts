@@ -22,6 +22,8 @@ get '/:start_date/:end_date' do
   @chart_title = StockQuote.chart_title(range)
   @data = StockQuote.chart_data(:candle, range)
   @labels = StockQuote.chart_data(:label, range)
+  @x_max = StockQuote.xmax(range)
+  @y_min, @y_max = StockQuote.y_min_and_max(@data)
   erb :'index.html'
 end
 

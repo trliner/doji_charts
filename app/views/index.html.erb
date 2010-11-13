@@ -1,7 +1,3 @@
-<%
-  x_max = @data.count + 1
-  y_min, y_max = y_min_and_max(@data)
-%>
 <canvas id="dojiCanvas" width="800" height="600">[No canvas support]</canvas>
 
 <form method="post"action = "/">
@@ -31,12 +27,12 @@
       dojiChart.Set('chart.text.angle', 45);
       dojiChart.Set('chart.crosshairs', true);
 
-      dojiChart.Set('chart.xmax', <%= x_max %>);
-      dojiChart.Set('chart.background.grid.autofit.numvlines', <%= x_max %>);
+      dojiChart.Set('chart.xmax', <%= @x_max %>);
+      dojiChart.Set('chart.background.grid.autofit.numvlines', <%= @x_max %>);
       dojiChart.Set('chart.xticks', false);
 
-      dojiChart.Set('chart.ymax', <%= y_max %>);
-      dojiChart.Set('chart.ymin', <%= y_min %>);
+      dojiChart.Set('chart.ymax', <%= @y_max %>);
+      dojiChart.Set('chart.ymin', <%= @y_min %>);
       dojiChart.Set('chart.background.grid.autofit.numhlines', <%= Doji::H_LINES %>);
 
       dojiChart.Draw();
