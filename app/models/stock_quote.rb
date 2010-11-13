@@ -8,6 +8,8 @@ class StockQuote
   property :high,   Decimal,  :required => true,  :scale => 2
   property :low,    Decimal,  :required => true,  :scale => 2
 
+  CHART_DATA_TYPES = [:candle, :label]
+
   def self.range(start_date, end_date)
     self.all(:date.gte => start_date, :date.lte => end_date).
       all(:order => :date)
@@ -17,35 +19,52 @@ class StockQuote
     self.first(:order => :date.desc)
   end
 
-  def self.chart_data(type, range)
-    chart_data = []
-    time = 1
-    range.each do |quote|
-      chart_data << quote.send(type, time)
-      time += 1
+  def self.chart_data(range)
+    chart_data = {}
+    chart_data[:title] = chart_title(range.first, range.last)
+
+    range_low = range.all(:order => :low).first.low
+    range_high = range.all(:order => :high).last.high
+    chart_data.merge!(y_min_and_max(range_low, range_high))
+    chart_data[:x_max] = range.count + 1
+
+    CHART_DATA_TYPES.each do |type|
+      chart_data[type] = []
+      time = 1
+      range.each do |quote|
+        chart_data[type] << quote.send(type, time)
+        time += 1
+      end
     end
+
     chart_data
   end
 
-  def self.chart_title(range)
-    "SPY: #{range.first.date.strftime("%m/%d/%Y")} - " +
-    "#{range.last.date.strftime("%m/%d/%Y")}"
+  def self.chart_title(first_quote, last_quote)
+    "SPY: #{first_quote.date.strftime("%m/%d/%Y")} - " +
+    "#{last_quote.date.strftime("%m/%d/%Y")}"
   end
 
-  def self.xmax(range)
-    range.count + 1
+  def self.y_min_and_max(range_low, range_high)
+    price_range = range_high - range_low
+    y_range, y_padding = y_range_and_padding(price_range)
+    y_min = round_to_increment(range_low - y_padding)
+    y_max = y_min + y_range
+    {:y_min => y_min, :y_max => y_max}
   end
 
-  def self.y_min_and_max(data)
-    data_low = data.collect {|d| d[1][0]}.sort.first
-    data_high = data.collect {|d| d[1][4]}.sort.last
-    data_range = data_high - data_low
+  def self.round_to_increment(price, method = :round)
+    price_increment = 0.25
+    (price / price_increment).send(method) * price_increment
+  end
 
-    chart_range = (data_range * 1.5 / (Doji::H_LINES + 1) / 0.25).ceil * 0.25 * Doji::H_LINES
-    chart_padding = (chart_range - data_range) / 2
-    y_min = ((data_low - chart_padding) / 0.25).round * 0.25
-    y_max = y_min + chart_range
-    [y_min, y_max]
+  def self.y_range_and_padding(price_range)
+    scaling_factor = 1.5
+    scaled_price_range = price_range * scaling_factor
+    min_label_spacing = scaled_price_range / (Doji::H_LINES + 1)
+    y_range = round_to_increment(min_label_spacing, :ceil) * Doji::H_LINES
+    y_padding = (y_range - price_range) / 2
+    [y_range, y_padding]
   end
 
   def label(time)

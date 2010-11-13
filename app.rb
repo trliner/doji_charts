@@ -18,12 +18,14 @@ get '/:start_date/:end_date' do
   @start_date = params[:start_date]
   @end_date = params[:end_date]
   range = StockQuote.range(@start_date, @end_date)
+  chart_data = StockQuote.chart_data(range)
   @page_title = "Doji Charts"
-  @chart_title = StockQuote.chart_title(range)
-  @data = StockQuote.chart_data(:candle, range)
-  @labels = StockQuote.chart_data(:label, range)
-  @x_max = StockQuote.xmax(range)
-  @y_min, @y_max = StockQuote.y_min_and_max(@data)
+  @chart_title = chart_data[:title]
+  @y_min = chart_data[:y_min]
+  @y_max = chart_data[:y_max]
+  @x_max = chart_data[:x_max]
+  @data = chart_data[:candle]
+  @labels = chart_data[:label]
   erb :'index.html'
 end
 
