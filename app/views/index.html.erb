@@ -27,7 +27,6 @@
 
       dojiChart.Set('chart.gutter', 55);
       dojiChart.Set('chart.background.grid.autofit', true);
-      dojiChart.Set('chart.boxplot.width', 15);
       dojiChart.Set('chart.scale.decimals', 2);
       dojiChart.Set('chart.text.angle', 45);
       dojiChart.Set('chart.crosshairs', true);
@@ -39,6 +38,10 @@
       dojiChart.Set('chart.ymax', <%= @y_max %>);
       dojiChart.Set('chart.ymin', <%= @y_min %>);
       dojiChart.Set('chart.background.grid.autofit.numhlines', <%= Doji::H_LINES %>);
+
+      <% @chart_properties.each do |key, value| %>
+        <%= "dojiChart.Set(#{key.to_json}, #{value.to_json})" %>
+      <% end %>
 
       dojiChart.Draw();
     }

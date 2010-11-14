@@ -1,8 +1,6 @@
 class StockQuote
   include DataMapper::Resource
 
-  CHART_DATA_TYPES = [:candle, :label]
-
   property :id,       Serial
   property :stock_id, Integer,  :required => true
   property :date,     Date,     :required => true
@@ -25,7 +23,7 @@ class StockQuote
     self.first(:order => :date.desc)
   end
 
-  def self.chart_data(range)
+  def self.chart_data(range, line_type = :candle)
     chart_data = {}
     chart_data[:title] = chart_title(range.first, range.last)
 
@@ -33,12 +31,13 @@ class StockQuote
     range_high = range.all(:order => :high).last.high
     chart_data.merge!(y_min_and_max(range_low, range_high))
     chart_data[:x_max] = range.count + 1
+    chart_data[:properties] = Doji::CHART_PROPERTIES[line_type]
 
-    CHART_DATA_TYPES.each do |type|
-      chart_data[type] = []
+    [:label, line_type].each do |data_type|
+      chart_data[data_type] = []
       time = 1
       range.each do |quote|
-        chart_data[type] << quote.send(type, time)
+        chart_data[data_type] << quote.send(data_type, time)
         time += 1
       end
     end
@@ -81,6 +80,11 @@ class StockQuote
   def candle(time)
     #[time, [low, lower(open, last), open < last ? lower : higher,higher(open, last), high, up_color, down_color]]
     [time, self.price_array << 'green' <<'red']
+  end
+
+  def line(time)
+    #[time, close]
+    [time, self.close]
   end
 
   def price_array

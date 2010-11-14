@@ -1,5 +1,17 @@
 class Doji
   H_LINES = 5
+
+  CHART_PROPERTIES = {
+    :candle => {
+      'chart.boxplot.width' => 15
+    },
+    :line => {
+      'chart.line' => true,
+      'chart.line.colors' => ['blue', 'blue'],
+      'chart.tickmarks' => nil
+    }
+  }
+
 end
 
 DataMapper.setup(:default, {
