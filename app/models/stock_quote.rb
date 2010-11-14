@@ -1,6 +1,8 @@
 class StockQuote
   include DataMapper::Resource
 
+  CHART_DATA_TYPES = [:candle, :label]
+
   property :id,     Serial
   property :date,   Date,     :required => true
   property :open,   Decimal,  :required => true,  :scale => 2
@@ -8,7 +10,10 @@ class StockQuote
   property :high,   Decimal,  :required => true,  :scale => 2
   property :low,    Decimal,  :required => true,  :scale => 2
 
-  CHART_DATA_TYPES = [:candle, :label]
+  belongs_to :stock
+  validates_with_block :stock_present do
+    self.stock.nil? ? [false, "Stock must be present"] : [true]
+  end
 
   def self.range(start_date, end_date)
     self.all(:date.gte => start_date, :date.lte => end_date).

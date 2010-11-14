@@ -13,6 +13,12 @@ get '/' do
   redirect "/#{start_date}/#{end_date}"
 end
 
+post '/' do
+  start_date = params['post']['start_date']
+  end_date = params['post']['end_date']
+  redirect "/#{start_date}/#{end_date}"
+end
+
 # /2010-10-22/2010-10-28
 get '/:start_date/:end_date' do
   @start_date = params[:start_date]
@@ -27,10 +33,4 @@ get '/:start_date/:end_date' do
   @data = chart_data[:candle]
   @labels = chart_data[:label]
   erb :'index.html'
-end
-
-post '/' do
-  start_date = params['post']['start_date']
-  end_date = params['post']['end_date']
-  redirect "/#{start_date}/#{end_date}"
 end
