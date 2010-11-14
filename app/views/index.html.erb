@@ -24,10 +24,10 @@
 
 <script>
     window.onload = function () {
-      dojiChart = new RGraph.Scatter('dojiCanvas', <%= @data.to_json %>);
+      dojiChart = new RGraph.Scatter('dojiCanvas', <%= @chart_data[@line_type].to_json %>);
 
-      dojiChart.Set('chart.title', <%= @chart_title.to_json %>);
-      dojiChart.Set('chart.labels', <%= @labels.to_json %>);
+      dojiChart.Set('chart.title', <%= @chart_data[:title].to_json %>);
+      dojiChart.Set('chart.labels', <%= @chart_data[:label].to_json %>);
 
       dojiChart.Set('chart.gutter', 55);
       dojiChart.Set('chart.background.grid.autofit', true);
@@ -35,15 +35,15 @@
       dojiChart.Set('chart.text.angle', 45);
       dojiChart.Set('chart.crosshairs', true);
 
-      dojiChart.Set('chart.xmax', <%= @x_max %>);
-      dojiChart.Set('chart.background.grid.autofit.numvlines', <%= @x_max %>);
+      dojiChart.Set('chart.xmax', <%= @chart_data[:x_max] %>);
+      dojiChart.Set('chart.background.grid.autofit.numvlines', <%= @chart_data[:x_max] %>);
       dojiChart.Set('chart.xticks', false);
 
-      dojiChart.Set('chart.ymax', <%= @y_max %>);
-      dojiChart.Set('chart.ymin', <%= @y_min %>);
+      dojiChart.Set('chart.ymax', <%= @chart_data[:y_max] %>);
+      dojiChart.Set('chart.ymin', <%= @chart_data[:y_min] %>);
       dojiChart.Set('chart.background.grid.autofit.numhlines', <%= Doji::H_LINES %>);
 
-      <% @chart_properties.each do |key, value| %>
+      <% @chart_data[:properties].each do |key, value| %>
         <%= "dojiChart.Set(#{key.to_json}, #{value.to_json})" %>
       <% end %>
 

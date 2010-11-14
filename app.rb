@@ -30,14 +30,7 @@ get '/:symbol/:start_date/:end_date/:line_type' do
   @end_date = params[:end_date]
   stock = Stock.first(:symbol => @symbol)
   range = stock.stock_quotes.range(@start_date, @end_date)
-  chart_data = StockQuote.chart_data(range, @line_type)
+  @chart_data = StockQuote.chart_data(range, @line_type)
   @page_title = "Doji Charts"
-  @chart_title = chart_data[:title]
-  @y_min = chart_data[:y_min]
-  @y_max = chart_data[:y_max]
-  @x_max = chart_data[:x_max]
-  @data = chart_data[@line_type]
-  @labels = chart_data[:label]
-  @chart_properties = chart_data[:properties]
   erb :'index.html'
 end
