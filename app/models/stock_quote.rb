@@ -3,12 +3,13 @@ class StockQuote
 
   CHART_DATA_TYPES = [:candle, :label]
 
-  property :id,     Serial
-  property :date,   Date,     :required => true
-  property :open,   Decimal,  :required => true,  :scale => 2
-  property :close,  Decimal,  :required => true,  :scale => 2
-  property :high,   Decimal,  :required => true,  :scale => 2
-  property :low,    Decimal,  :required => true,  :scale => 2
+  property :id,       Serial
+  property :stock_id, Integer,  :required => true
+  property :date,     Date,     :required => true
+  property :open,     Decimal,  :required => true,  :scale => 2
+  property :close,    Decimal,  :required => true,  :scale => 2
+  property :high,     Decimal,  :required => true,  :scale => 2
+  property :low,      Decimal,  :required => true,  :scale => 2
 
   belongs_to :stock
   validates_with_block :stock_present do
