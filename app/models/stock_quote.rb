@@ -47,8 +47,8 @@ class StockQuote
   end
 
   def self.chart_title(first_quote, last_quote)
-    "SPY: #{first_quote.date.strftime("%m/%d/%Y")} - " +
-    "#{last_quote.date.strftime("%m/%d/%Y")}"
+    "#{first_quote.stock.symbol}: #{first_quote.date.strftime("%m/%d/%Y")}" +
+    " - #{last_quote.date.strftime("%m/%d/%Y")}"
   end
 
   def self.y_min_and_max(range_low, range_high)
