@@ -12,11 +12,19 @@
   </li>
   <li>
     <label>Symbol</label>
-    <input name="post[symbol]" value=<%= @symbol %> />
+    <select name="post[symbol]">
+      <% Stock.each do |stock| %>
+        <option <%= "selected" if stock.symbol == @symbol %> value=<%= stock.symbol %>><%= stock.symbol %></option>
+      <% end %>
+    </select>
   </li>
   <li>
     <label>Line Type</label>
-    <input name="post[line_type]" value=<%= @line_type %> />
+    <select name="post[line_type]">
+      <% Doji::CHART_PROPERTIES.keys.each do |line_type| %>
+        <option <%= "selected" if line_type == @line_type %> value=<%= line_type %>><%= line_type %></option>
+      <% end %>
+    </select>
   </li>
   <li><input type="submit" value="Submit" /></li>
   </ol>
