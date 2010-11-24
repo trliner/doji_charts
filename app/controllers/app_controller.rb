@@ -1,3 +1,5 @@
+include ChartDataHelpers
+
 get '/' do
   symbol = Stock.first.symbol
   end_date = StockQuote.most_recent.date
@@ -21,7 +23,7 @@ get '/:symbol/:start_date/:end_date/:line_type' do
   @end_date = params[:end_date]
   stock = Stock.first(:symbol => @symbol)
   range = stock.stock_quotes.range(@start_date, @end_date)
-  @chart_data = StockQuote.chart_data(range, @line_type)
+  @chart_data = chart_data(range, @line_type)
   @page_title = "Doji Charts"
   erb :'index.html'
 end

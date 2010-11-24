@@ -6,8 +6,8 @@ Bundler.require(:default)
 require 'app/base'
 
 set :views, root_path("app", "views")
-load_app 'controllers'
 load_app 'helpers'
+load_app 'controllers'
 load_app 'models'
 
 class Doji
