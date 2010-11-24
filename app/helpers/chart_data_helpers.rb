@@ -34,6 +34,7 @@ module ChartDataHelpers
     scaling_factor = 1.5
     scaled_price_range = price_range * scaling_factor
     min_label_spacing = scaled_price_range / (Doji::H_LINES + 1)
+
     y_range = round_to_increment(min_label_spacing, :ceil) * Doji::H_LINES
   end
 
