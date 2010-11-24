@@ -15,4 +15,5 @@ def load_app(files_dir)
   end
 end
 
-require 'config/env'
+require 'logger'
+LOGGER = Logger.new(root_path('log', "#{RACK_ENV}.log"))
