@@ -4,6 +4,7 @@ Bundler.setup
 Bundler.require(:default)
 
 require 'app/base'
+require 'config/config'
 
 set :views, root_path("app", "views")
 load_app 'helpers'
@@ -24,12 +25,3 @@ class Doji
     }
   }
 end
-
-DataMapper.setup(:default, {
-  :adapter  => 'mysql',
-  :host     => 'localhost',
-  :username => 'root' ,
-  :password => '',
-  :database => 'doji_development'})
-
-DataMapper.auto_upgrade!

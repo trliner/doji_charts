@@ -2,6 +2,7 @@ SETUP STEPS:
 
 * run 'rake' to setup log directory
 * create localhost mysql database 'doji_development'
+* create a 'config.rb' file similar to 'config/config.rb.example'
 * run 'ruby script/import_quotes' to import stock quote data
 * configure passenger
 
