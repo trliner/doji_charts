@@ -1,5 +1,5 @@
 task :default => [:setup]
 
 task :setup do
-  exec "mkdir log"
+  FileUtils.mkdir_p 'log' unless File.exists?('log')
 end
